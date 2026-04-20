@@ -1,6 +1,7 @@
 use crate::block::Block;
 use crate::state::State;
 use crate::transaction::Transaction;
+use crate::mempool::Mempool;
 
 pub struct Blockchain {
     pub chain: Vec<Block>,
@@ -76,5 +77,34 @@ impl Blockchain {
             }
         }
         state
+    }
+
+    pub fn produce_block(&mut self, mempool: &mut Mempool, max_txs: usize) {
+        let mut state = self.get_current_state();
+        let miner = "miner".to_string();
+        let mut total_fees = 0;
+
+        let mut selected = Vec::new();
+        let txs = mempool.get_transactions(max_txs);
+
+        for tx in txs {
+            if state.apply_transaction(&tx).is_ok() {
+                selected.push(tx);
+            }
+        }
+
+        if selected.is_empty() {
+            println!("No valid transactions to include");
+            return;
+        }
+
+        for tx in &selected {
+            total_fees += tx.fee;
+        }
+
+        *state.balances.entry(miner).or_insert(0) += total_fees;
+
+
+        self.add_block(selected);
     }
 }

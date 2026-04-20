@@ -27,7 +27,9 @@ impl State {
         let balance = self.get_balance(&tx.from);
         let nonce = self.get_nonce(&tx.from);
 
-        if balance < tx.amount {
+        let total_cost = tx.amount + tx.fee;
+
+        if balance < total_cost {
             return Err("Insufficient balance".into());
         }
 
@@ -35,8 +37,9 @@ impl State {
             return Err("Invalid nonce".into());
         }
 
+
         // Apply state transition
-        self.balances.insert(tx.from.clone(), balance - tx.amount);
+        self.balances.insert(tx.from.clone(), balance - total_cost);
         *self.balances.entry(tx.to.clone()).or_insert(0) += tx.amount;
         self.nonces.insert(tx.from.clone(), nonce + 1);
 

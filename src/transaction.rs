@@ -8,11 +8,12 @@ pub struct Transaction {
     pub to: Address,
     pub amount: u64,
     pub nonce: u64,
+    pub fee: u64,
 }
 
 impl Transaction {
-    pub fn new(from: Address, to: Address, amount: u64, nonce: u64) -> Self {
-        Self { from, to, amount, nonce }
+    pub fn new(from: Address, to: Address, amount: u64, nonce: u64, fee: u64) -> Self {
+        Self { from, to, amount, nonce, fee }
     }
 
     pub fn hash(&self) -> String {

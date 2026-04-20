@@ -61,6 +61,7 @@ impl Mempool {
             }
         }
 
+        selected.sort_by(|a, b| b.fee.cmp(&a.fee));
         selected
     }
 
