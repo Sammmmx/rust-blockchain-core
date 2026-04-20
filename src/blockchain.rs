@@ -61,4 +61,20 @@ impl Blockchain {
 
         Ok(())
     }
+
+    pub fn get_current_state(&self) -> State {
+        let mut state = State::new();
+
+        // genesis allocation
+        state.balances.insert("alice".into(), 100);
+
+        for i in 1..self.chain.len() {
+            let block = &self.chain[i];
+
+            for tx in &block.transactions {
+                state.apply_transaction(tx).unwrap();
+            }
+        }
+        state
+    }
 }
