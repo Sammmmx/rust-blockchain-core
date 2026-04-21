@@ -25,35 +25,25 @@ and a mempool for pending transactions.
 
 ## Project structure
 src/
-├── main.rs          # Demo: two nodes, transactions, mining, chain sync
-├── block.rs         # Block struct, SHA-256 hashing, Merkle tree, PoW mining
-├── blockchain.rs    # Chain management, validation, chain selection
-├── transaction.rs   # Transaction struct, Ed25519 signing and verification
-├── mempool.rs       # Pending transaction queue
-├── state.rs         # Account balances, nonces, state root
-└── node.rs          # Node abstraction, peer list, broadcast stubs
+- main.rs          # Demo: two nodes, transactions, mining, chain sync
+- block.rs         # Block struct, SHA-256 hashing, Merkle tree, PoW mining
+- blockchain.rs    # Chain management, validation, chain selection
+- transaction.rs   # Transaction struct, Ed25519 signing and verification
+- mempool.rs       # Pending transaction queue
+- state.rs         # Account balances, nonces, state root
+- node.rs          # Node abstraction, peer list, broadcast stubs
 
 ---
 
 ## How it works
 
 ### Block production
-Transactions submitted to mempool
-│
-▼
-Verify signatures + validate against current state
-│
-▼
-Build Merkle root from transaction hashes
-│
-▼
-Compute state root (Merkle root of all balances + nonces)
-│
-▼
-Proof-of-Work: increment nonce until hash starts with N zeros
-│
-▼
-Block appended to chain, state committed
+Transactions submitted to mempool -> 
+Verify signatures + validate against current state -> 
+Build Merkle root from transaction hashes ->
+Compute state root (Merkle root of all balances + nonces) -> 
+Proof-of-Work: increment nonce until hash starts with N zeros ->
+Block appended to chain, state committed 
 
 ### Chain validation
 
